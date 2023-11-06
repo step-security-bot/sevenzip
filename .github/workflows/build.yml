@@ -10,8 +10,15 @@ on:
   schedule:
     - cron: 0 0 * * 1
 
+permissions:
+  contents: read
+
 jobs:
   test:
+    permissions:
+      checks: write  # for shogo82148/actions-goveralls to create a new check based on the results
+      contents: read  # for actions/checkout to fetch code
+      pull-requests: read  # for golangci/golangci-lint-action to fetch pull requests
     name: Build and Test
     runs-on: ubuntu-latest
     strategy:
@@ -47,6 +54,8 @@ jobs:
           parallel: true
 
   finish:
+    permissions:
+      checks: write  # for shogo82148/actions-goveralls to create a new check based on the results
     needs: test
     runs-on: ubuntu-latest
 
